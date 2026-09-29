@@ -1,0 +1,73 @@
+// ============================================
+// 主题配色变量（Tetris Game）
+// ============================================
+
+// 品牌主题色
+$color-primary: #6c5ce7;
+$color-primary-light: #a29bfe;
+$color-primary-dark: #4834d4;
+
+// 功能色
+$color-success: #00b894;
+$color-warning: #fdcb6e;
+$color-error: #ff7675;
+$color-info: #74b9ff;
+
+// 背景色
+$color-bg-page: #0a0a1a;
+$color-bg-card: rgba(30, 30, 50, 0.85);
+$color-bg-hover: rgba(255, 255, 255, 0.05);
+
+// 文本色
+$color-text-primary: #ffffff;
+$color-text-secondary: rgba(255, 255, 255, 0.7);
+$color-text-tertiary: rgba(255, 255, 255, 0.4);
+$color-text-disabled: rgba(255, 255, 255, 0.2);
+$color-text-white: #ffffff;
+
+// 边框色
+$color-border: rgba(255, 255, 255, 0.1);
+$color-divider: rgba(255, 255, 255, 0.05);
+
+// ===== Tetris 方块颜色 (7种, 带3D效果) =====
+// I - Cyan
+$tetris-i-top: #00e5ff;
+$tetris-i-main: #00b8d4;
+$tetris-i-bottom: #00838f;
+$tetris-i-glow: rgba(0, 229, 255, 0.4);
+
+// J - Blue
+$tetris-j-top: #448aff;
+$tetris-j-main: #2962ff;
+$tetris-j-bottom: #002984;
+$tetris-j-glow: rgba(68, 138, 255, 0.4);
+
+// L - Orange
+$tetris-l-top: #ffab40;
+$tetris-l-main: #ff9100;
+$tetris-l-bottom: #e65100;
+$tetris-l-glow: rgba(255, 171, 64, 0.4);
+
+// O - Yellow
+$tetris-o-top: #ffff00;
+$tetris-o-main: #ffea00;
+$tetris-o-bottom: #ffd600;
+$tetris-o-glow: rgba(255, 234, 0, 0.4);
+
+// S - Green
+$tetris-s-top: #69f0ae;
+$tetris-s-main: #00e676;
+$tetris-s-bottom: #00c853;
+$tetris-s-glow: rgba(105, 240, 174, 0.4);
+
+// T - Purple
+$tetris-t-top: #ea80fc;
+$tetris-t-main: #d500f9;
+$tetris-t-bottom: #aa00ff;
+$tetris-t-glow: rgba(234, 128, 252, 0.4);
+
+// Z - Red
+$tetris-z-top: #ff5252;
+$tetris-z-main: #ff1744;
+$tetris-z-bottom: #d50000;
+$tetris-z-glow: rgba(255, 82, 82, 0.4);
