@@ -6,7 +6,6 @@
     <title>Tetris</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-
         body {
             background: linear-gradient(180deg, #0a0a1a 0%, #1a1a2e 50%, #0a0a1a 100%);
             color: #ffffff;
@@ -17,9 +16,7 @@
             min-height: 100vh;
             overflow: hidden;
         }
-
         .game-container { display: flex; gap: 48px; align-items: flex-start; }
-
         .game-title {
             position: absolute; top: 32px; left: 50%; transform: translateX(-50%);
             font-size: 64px; font-weight: 700; letter-spacing: 16px;
@@ -27,119 +24,38 @@
             -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
             filter: drop-shadow(0 0 20px rgba(213, 0, 249, 0.3));
         }
-
         .board-wrapper {
             position: relative; border: 3px solid rgba(255, 255, 255, 0.15); border-radius: 12px;
             overflow: hidden; background: rgba(0, 0, 0, 0.6);
             box-shadow: 0 0 60px rgba(108, 92, 231, 0.2), 0 0 120px rgba(108, 92, 231, 0.1);
         }
-
-        .board {
-            display: grid; grid-template-columns: repeat(10, 1fr); grid-template-rows: repeat(20, 1fr);
-            width: 360px; height: 720px; position: relative;
-        }
-
-        .cell {
-            width: 100%; height: 100%; position: relative;
-            transition: transform 0.3s ease, opacity 0.3s ease;
-        }
-
-        .cell-empty {
-            background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.04);
-        }
-
-        .block {
-            position: absolute; top: 2px; left: 2px; right: 2px; bottom: 2px; border-radius: 4px;
-            transition: transform 0.15s ease, opacity 0.15s ease;
-        }
-
-        .block::before {
-            content: ''; position: absolute; top: 2px; left: 2px; right: 30%; height: 35%;
-            background: linear-gradient(180deg, rgba(255, 255, 255, 0.5) 0%, rgba(255, 255, 255, 0) 100%);
-            border-radius: 3px 3px 50% 50%;
-        }
-
-        .block::after {
-            content: ''; position: absolute; bottom: 2px; left: 2px; right: 2px; height: 30%;
-            background: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.3) 100%);
-            border-radius: 0 0 3px 3px;
-        }
-
-        /* Line clear flash effect */
-        .cell-flash .block {
-            animation: flashBlock 0.4s ease-out;
-        }
-
-        @keyframes flashBlock {
-            0% { filter: brightness(1); transform: scale(1); }
-            50% { filter: brightness(3); transform: scale(1.1); }
-            100% { filter: brightness(5); transform: scale(0); opacity: 0; }
-        }
-
-        /* Line clear explosion particles */
-        .particle {
-            position: absolute; width: 6px; height: 6px; border-radius: 50%;
-            pointer-events: none; z-index: 100;
-            animation: particleFly 0.6s ease-out forwards;
-        }
-
-        @keyframes particleFly {
-            0% { transform: translate(0, 0) scale(1); opacity: 1; }
-            100% { opacity: 0; }
-        }
-
-        /* Row collapse animation */
-        .row-collapse {
-            animation: rowCollapse 0.3s ease-in;
-        }
-
-        @keyframes rowCollapse {
-            0% { transform: translateY(0); opacity: 1; }
-            100% { transform: translateY(36px); opacity: 0.5; }
-        }
-
+        canvas { display: block; }
         .side-panel { display: flex; flex-direction: column; gap: 20px; min-width: 200px; }
-
         .info-card {
             background: rgba(30, 30, 50, 0.85); border: 1px solid rgba(255, 255, 255, 0.08);
             border-radius: 12px; padding: 16px 20px; backdrop-filter: blur(10px);
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
         }
-
         .info-label {
             font-size: 13px; color: rgba(255, 255, 255, 0.4); text-transform: uppercase;
             letter-spacing: 2px; margin-bottom: 6px; font-weight: 500;
         }
-
         .info-value {
             font-size: 36px; font-weight: 700; font-variant-numeric: tabular-nums; line-height: 1;
         }
-
         .score-value {
             background: linear-gradient(135deg, #ffea00, #ff9100);
             -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
         }
-
         .level-value {
             background: linear-gradient(135deg, #69f0ae, #00e676);
             -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
         }
-
         .lines-value {
             background: linear-gradient(135deg, #74b9ff, #0984e3);
             -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
         }
-
         .preview-container { display: flex; align-items: center; justify-content: center; padding: 8px 0; }
-        .preview-grid { display: grid; gap: 2px; padding: 12px; }
-        .preview-cell { width: 28px; height: 28px; border-radius: 3px; }
-        .preview-cell-filled { position: relative; }
-        .preview-cell-filled::before {
-            content: ''; position: absolute; top: 1px; left: 1px; right: 50%; height: 40%;
-            background: linear-gradient(180deg, rgba(255, 255, 255, 0.4) 0%, rgba(255, 255, 255, 0) 100%);
-            border-radius: 2px;
-        }
-
         .control-btn {
             display: flex; align-items: center; justify-content: center; height: 52px;
             background: rgba(108, 92, 231, 0.3); border: 1px solid rgba(108, 92, 231, 0.5);
@@ -152,14 +68,12 @@
             height: 56px; font-size: 18px;
         }
         .control-btn-primary:hover { background: linear-gradient(135deg, #5a4bd1, #8b7ff0); }
-
         .overlay {
             position: absolute; top: 0; left: 0; right: 0; bottom: 0;
             display: flex; flex-direction: column; align-items: center; justify-content: center;
             background: rgba(10, 10, 26, 0.92); backdrop-filter: blur(8px); z-index: 10;
             border-radius: 12px;
         }
-
         .overlay-title {
             font-size: 80px; font-weight: 700; letter-spacing: 20px; margin-bottom: 20px;
             background: linear-gradient(135deg, #00e5ff, #d500f9, #ffea00, #00e676);
@@ -167,12 +81,10 @@
             -webkit-text-fill-color: transparent; background-clip: text;
             animation: gradientShift 4s ease infinite;
         }
-
         .overlay-subtitle {
             font-size: 15px; color: rgba(255, 255, 255, 0.5); margin-bottom: 40px;
             text-align: center; line-height: 2;
         }
-
         .start-btn {
             display: flex; align-items: center; justify-content: center; min-width: 200px;
             height: 56px; background: linear-gradient(135deg, #6c5ce7, #a29bfe); border: none;
@@ -181,7 +93,6 @@
             cursor: pointer; transition: all 0.2s ease;
         }
         .start-btn:hover { box-shadow: 0 12px 40px rgba(108, 92, 231, 0.5); transform: translateY(-2px); }
-
         .game-over-title {
             font-size: 48px; font-weight: 700; color: #ff7675; margin-bottom: 16px;
             text-shadow: 0 0 20px rgba(255, 118, 117, 0.4);
@@ -201,7 +112,6 @@
             cursor: pointer; transition: all 0.2s ease;
         }
         .retry-btn:hover { box-shadow: 0 12px 40px rgba(255, 118, 117, 0.4); transform: translateY(-2px); }
-
         .keyboard-hints {
             display: flex; flex-direction: column; gap: 10px; margin-top: 12px; padding: 16px;
             background: rgba(30, 30, 50, 0.5); border: 1px solid rgba(255, 255, 255, 0.05);
@@ -215,32 +125,17 @@
             border-radius: 6px; font-size: 12px; font-weight: 600; color: rgba(255, 255, 255, 0.6);
         }
         .hint-text { font-size: 13px; color: rgba(255, 255, 255, 0.35); }
-
         .level-progress { margin-top: 8px; height: 4px; background: rgba(255, 255, 255, 0.05);
             border-radius: 2px; overflow: hidden; }
         .level-progress-bar {
             height: 100%; background: linear-gradient(90deg, #69f0ae, #00e676);
             border-radius: 2px; transition: width 0.3s ease;
         }
-
-        .combo-text {
-            position: absolute; left: 50%; transform: translateX(-50%);
-            font-size: 32px; font-weight: 700; pointer-events: none;
-            animation: comboFloat 1s ease-out forwards;
-            z-index: 50;
-        }
-
-        @keyframes comboFloat {
-            0% { opacity: 1; transform: translateX(-50%) translateY(0) scale(1); }
-            100% { opacity: 0; transform: translateX(-50%) translateY(-80px) scale(1.5); }
-        }
-
         @keyframes gradientShift {
             0% { background-position: 0% 50%; }
             50% { background-position: 100% 50%; }
             100% { background-position: 0% 50%; }
         }
-
         .hidden { display: none; }
     </style>
 </head>
@@ -248,7 +143,7 @@
     <div class="game-title">TETRIS</div>
     <div class="game-container">
         <div class="board-wrapper" id="boardWrapper">
-            <div class="board" id="board"></div>
+            <canvas id="gameCanvas" width="360" height="720"></canvas>
             <div class="overlay" id="startOverlay">
                 <div class="overlay-title">TETRIS</div>
                 <div class="overlay-subtitle">
@@ -286,7 +181,7 @@
             </div>
             <div class="info-card">
                 <div class="info-label">Next</div>
-                <div class="preview-container" id="previewContainer"></div>
+                <canvas id="previewCanvas" width="112" height="112"></canvas>
             </div>
             <button class="control-btn control-btn-primary" id="pauseBtn">PAUSE</button>
             <div class="keyboard-hints">
@@ -300,6 +195,7 @@
     </div>
 
     <script>
+        // Tetromino definitions
         const TETROMINOES = {
             I: { color: { top: '#00e5ff', main: '#00b8d4', bottom: '#00838f', glow: 'rgba(0, 229, 255, 0.4)' },
                 shapes: [[[0,0,0,0],[1,1,1,1],[0,0,0,0],[0,0,0,0]],[[0,0,1,0],[0,0,1,0],[0,0,1,0],[0,0,1,0]],[[0,0,0,0],[0,0,0,0],[1,1,1,1],[0,0,0,0]],[[0,1,0,0],[0,1,0,0],[0,1,0,0],[0,1,0,0]]] },
@@ -321,15 +217,20 @@
         const BOARD_WIDTH = 10, BOARD_HEIGHT = 20;
         const POINTS = { 1: 100, 2: 300, 3: 500, 4: 800 };
         const INITIAL_SPEED = 800, MIN_SPEED = 100, SPEED_FACTOR = 0.85;
+        const CELL_SIZE = 36;
 
         let board = [], currentPiece = null, nextPieceType = null;
         let score = 0, level = 1, lines = 0;
         let isPlaying = false, isPaused = false, isGameOver = false;
-        let gameLoopId = null, lastDropTime = 0;
-        let isClearingLines = false;
+        let lastDropTime = 0;
+        let particles = [];
 
-        const boardEl = document.getElementById('board');
-        const boardWrapper = document.getElementById('boardWrapper');
+        // Canvas setup
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+        const previewCanvas = document.getElementById('previewCanvas');
+        const previewCtx = previewCanvas.getContext('2d');
+
         const startOverlay = document.getElementById('startOverlay');
         const pauseOverlay = document.getElementById('pauseOverlay');
         const gameOverOverlay = document.getElementById('gameOverOverlay');
@@ -337,7 +238,6 @@
         const scoreEl = document.getElementById('score');
         const levelEl = document.getElementById('level');
         const linesEl = document.getElementById('lines');
-        const previewContainer = document.getElementById('previewContainer');
         const levelProgressBar = document.getElementById('levelProgress');
         const pauseBtn = document.getElementById('pauseBtn');
 
@@ -348,7 +248,6 @@
         }
 
         function initBoard() { board = Array.from({ length: BOARD_HEIGHT }, () => Array(BOARD_WIDTH).fill(null)); }
-
         function getSpeed() { return Math.max(MIN_SPEED, INITIAL_SPEED * Math.pow(SPEED_FACTOR, level - 1)); }
         function calculatePoints(linesCleared) { return (POINTS[linesCleared] || 0) * level; }
 
@@ -380,82 +279,190 @@
             }
         }
 
-        function createParticles(row, col, color) {
-            const cellSize = 36;
-            const centerX = col * cellSize + cellSize / 2;
-            const centerY = row * cellSize + cellSize / 2;
-            const colors = [color.top, color.main, color.bottom, '#ffffff'];
+        function drawBlock(context, x, y, size, colors, alpha = 1) {
+            const pad = 2;
+            const bx = x + pad, by = y + pad, bs = size - pad * 2;
 
-            for (let i = 0; i < 8; i++) {
-                const particle = document.createElement('div');
-                particle.className = 'particle';
-                const angle = (Math.PI * 2 / 8) * i + Math.random() * 0.5;
-                const distance = 30 + Math.random() * 40;
-                const dx = Math.cos(angle) * distance;
-                const dy = Math.sin(angle) * distance;
-                const pColor = colors[Math.floor(Math.random() * colors.length)];
+            // Main block with 3D gradient
+            const grad = context.createLinearGradient(bx, by, bx, by + bs);
+            grad.addColorStop(0, colors.top);
+            grad.addColorStop(0.6, colors.main);
+            grad.addColorStop(1, colors.bottom);
+            context.fillStyle = grad;
+            context.globalAlpha = alpha;
+            context.fillRect(bx, by, bs, bs);
 
-                particle.style.left = centerX + 'px';
-                particle.style.top = centerY + 'px';
-                particle.style.background = pColor;
-                particle.style.boxShadow = `0 0 6px ${pColor}`;
-                particle.style.animation = `particleFly 0.6s ease-out forwards`;
+            // Top highlight
+            context.fillStyle = 'rgba(255, 255, 255, 0.5)';
+            context.fillRect(bx + 2, by + 2, bs * 0.3, bs * 0.35);
 
-                // Custom animation for each particle
-                const keyframes = [
-                    { transform: 'translate(0, 0) scale(1)', opacity: 1 },
-                    { transform: `translate(${dx}px, ${dy}px) scale(0)`, opacity: 0 }
-                ];
-                const animation = particle.animate(keyframes, { duration: 500 + Math.random() * 200, easing: 'ease-out' });
-                animation.onfinish = () => particle.remove();
+            // Bottom shadow
+            context.fillStyle = 'rgba(0, 0, 0, 0.3)';
+            context.fillRect(bx + 2, by + bs * 0.7, bs, bs * 0.3);
 
-                boardWrapper.appendChild(particle);
+            // Glow effect
+            if (alpha >= 0.8) {
+                context.shadowColor = colors.glow;
+                context.shadowBlur = 8;
+                context.strokeStyle = colors.glow;
+                context.lineWidth = 1;
+                context.strokeRect(bx, by, bs, bs);
+                context.shadowBlur = 0;
+            }
+            context.globalAlpha = 1;
+        }
+
+        // Optimized render - only renders current frame
+        function renderBoard() {
+            // Clear canvas
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.6)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            // Draw grid lines
+            ctx.strokeStyle = 'rgba(255, 255, 255, 0.04)';
+            ctx.lineWidth = 1;
+            for (let i = 0; i <= BOARD_WIDTH; i++) {
+                ctx.beginPath(); ctx.moveTo(i * CELL_SIZE, 0); ctx.lineTo(i * CELL_SIZE, canvas.height); ctx.stroke();
+            }
+            for (let i = 0; i <= BOARD_HEIGHT; i++) {
+                ctx.beginPath(); ctx.moveTo(0, i * CELL_SIZE); ctx.lineTo(canvas.width, i * CELL_SIZE); ctx.stroke();
+            }
+
+            // Draw board
+            for (let row = 0; row < BOARD_HEIGHT; row++) {
+                for (let col = 0; col < BOARD_WIDTH; col++) {
+                    if (board[row][col]) {
+                        const colors = TETROMINOES[board[row][col]].color;
+                        drawBlock(ctx, col * CELL_SIZE, row * CELL_SIZE, CELL_SIZE, colors);
+                    }
+                }
+            }
+
+            // Draw ghost piece
+            if (currentPiece) {
+                let ghostY = currentPiece.position.y;
+                while (!checkCollision(currentPiece, currentPiece.rotation, 0, ghostY - currentPiece.position.y + 1)) ghostY++;
+                const shape = TETROMINOES[currentPiece.type].shapes[currentPiece.rotation];
+                const colors = TETROMINOES[currentPiece.type].color;
+                for (let row = 0; row < shape.length; row++) {
+                    for (let col = 0; col < shape[row].length; col++) {
+                        if (shape[row][col]) {
+                            const x = (currentPiece.position.x + col) * CELL_SIZE;
+                            const y = (ghostY + row) * CELL_SIZE;
+                            ctx.fillStyle = colors.main;
+                            ctx.globalAlpha = 0.2;
+                            ctx.fillRect(x + 2, y + 2, CELL_SIZE - 4, CELL_SIZE - 4);
+                            ctx.globalAlpha = 1;
+                        }
+                    }
+                }
+
+                // Draw current piece
+                for (let row = 0; row < shape.length; row++) {
+                    for (let col = 0; col < shape[row].length; col++) {
+                        if (shape[row][col]) {
+                            const x = (currentPiece.position.x + col) * CELL_SIZE;
+                            const y = (currentPiece.position.y + row) * CELL_SIZE;
+                            drawBlock(ctx, x, y, CELL_SIZE, colors);
+                        }
+                    }
+                }
+            }
+
+            // Draw particles
+            particles.forEach(p => {
+                ctx.fillStyle = p.color;
+                ctx.shadowColor = p.color;
+                ctx.shadowBlur = 6;
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+                ctx.fill();
+            });
+            ctx.shadowBlur = 0;
+        }
+
+        function spawnPreview() {
+            previewCtx.clearRect(0, 0, previewCanvas.width, previewCanvas.height);
+            if (!nextPieceType) return;
+            const shape = TETROMINOES[nextPieceType].shapes[0];
+            const colors = TETROMINOES[nextPieceType].color;
+            const size = 28;
+            const offsetX = (previewCanvas.width - shape[0].length * size) / 2;
+            const offsetY = (previewCanvas.height - shape.length * size) / 2;
+            for (let row = 0; row < shape.length; row++) {
+                for (let col = 0; col < shape[row].length; col++) {
+                    if (shape[row][col]) {
+                        drawBlock(previewCtx, offsetX + col * size, offsetY + row * size, size, colors);
+                    }
+                }
             }
         }
 
-        function showComboText(text, color) {
+        function createParticles(row, col, color) {
+            const colors = [color.top, color.main, color.bottom, '#ffffff'];
+            for (let i = 0; i < 8; i++) {
+                const angle = (Math.PI * 2 / 8) * i + Math.random() * 0.5;
+                const speed = 100 + Math.random() * 150;
+                particles.push({
+                    x: col * CELL_SIZE + CELL_SIZE / 2,
+                    y: row * CELL_SIZE + CELL_SIZE / 2,
+                    vx: Math.cos(angle) * speed,
+                    vy: Math.sin(angle) * speed,
+                    size: 2 + Math.random() * 3,
+                    color: colors[Math.floor(Math.random() * colors.length)],
+                    life: 1
+                });
+            }
+        }
+
+        function updateParticles(dt) {
+            for (let i = particles.length - 1; i >= 0; i--) {
+                const p = particles[i];
+                p.x += p.vx * dt;
+                p.y += p.vy * dt;
+                p.life -= dt * 2;
+                if (p.life <= 0) particles.splice(i, 1);
+            }
+        }
+
+        function showComboText(linesCleared) {
+            const messages = { 1: '+LINES', 2: '+DOUBLE!', 3: '+TRIPLE!!', 4: 'TETRIS!!!' };
+            const colors = ['#00e5ff', '#00e676', '#ffea00', '#ff7675'];
+            const msg = messages[linesCleared] || `+${linesCleared} LINES`;
+            const color = colors[Math.min(linesCleared - 1, 3)];
+
+            // Create a temporary DOM element for the combo text
             const combo = document.createElement('div');
-            combo.className = 'combo-text';
-            combo.textContent = text;
-            combo.style.color = color;
-            combo.style.textShadow = `0 0 20px ${color}`;
-            combo.style.bottom = '100px';
-            combo.style.left = '50%';
-            boardWrapper.appendChild(combo);
+            combo.style.cssText = `position:absolute;left:50%;transform:translateX(-50%);bottom:100px;font-size:32px;font-weight:700;color:${color};text-shadow:0 0 20px ${color};pointer-events:none;z-index:50;transition:all 1s ease-out;opacity:1;`;
+            combo.textContent = msg;
+            document.getElementById('boardWrapper').appendChild(combo);
+
+            // Trigger animation
+            requestAnimationFrame(() => {
+                combo.style.opacity = '0';
+                combo.style.transform = 'translateX(-50%) translateY(-80px) scale(1.5)';
+            });
             setTimeout(() => combo.remove(), 1000);
         }
 
         function clearLines() {
             const fullRows = [];
             for (let row = 0; row < BOARD_HEIGHT; row++) {
-                if (board[row].every(cell => cell !== null)) {
-                    fullRows.push(row);
-                }
+                if (board[row].every(cell => cell !== null)) fullRows.push(row);
             }
-
             if (fullRows.length === 0) return 0;
 
-            // Create particles for each full row
             fullRows.forEach(row => {
                 for (let col = 0; col < BOARD_WIDTH; col++) {
                     if (board[row][col]) {
-                        const colors = TETROMINOES[board[row][col]].color;
-                        createParticles(row, col, colors);
+                        createParticles(row, col, TETROMINOES[board[row][col]].color);
                     }
                 }
             });
 
-            // Show combo text
-            const comboMessages = { 1: '+LINES', 2: '+DOUBLE!', 3: '+TRIPLE!!', 4: 'TETRIS!!!' };
-            const comboColors = ['#00e5ff', '#00e676', '#ffea00', '#ff7675'];
-            showComboText(comboMessages[fullRows.length] || `+${fullRows.length} LINES`, comboColors[Math.min(fullRows.length - 1, 3)]);
-
-            // Remove full rows
+            showComboText(fullRows.length);
             fullRows.forEach(row => { board.splice(row, 1); });
-            while (board.length < BOARD_HEIGHT) {
-                board.unshift(Array(BOARD_WIDTH).fill(null));
-            }
-
+            while (board.length < BOARD_HEIGHT) board.unshift(Array(BOARD_WIDTH).fill(null));
             return fullRows.length;
         }
 
@@ -463,38 +470,62 @@
             currentPiece = createPiece(nextPieceType);
             nextPieceType = randomPiece();
             if (checkCollision(currentPiece, currentPiece.rotation, 0, 0)) gameOver();
-            renderPreview();
+            spawnPreview();
         }
 
         function gameOver() {
             isGameOver = true; isPlaying = false;
-            if (gameLoopId) cancelAnimationFrame(gameLoopId);
             finalScoreEl.textContent = score.toLocaleString();
             gameOverOverlay.classList.remove('hidden');
         }
 
         function startGame() {
             initBoard(); score = 0; level = 1; lines = 0;
-            isPlaying = true; isPaused = false; isGameOver = false; isClearingLines = false;
+            isPlaying = true; isPaused = false; isGameOver = false;
             nextPieceType = randomPiece(); spawnPiece(); updateUI();
             startOverlay.classList.add('hidden'); gameOverOverlay.classList.add('hidden'); pauseOverlay.classList.add('hidden');
-            lastDropTime = Date.now(); gameLoop();
+            lastDropTime = performance.now();
         }
 
-        function gameLoop() {
+        function updateUI() {
+            scoreEl.textContent = score.toLocaleString(); levelEl.textContent = level;
+            linesEl.textContent = lines;
+            levelProgressBar.style.width = `${((lines % 10) / 10) * 100}%`;
+        }
+
+        // Main game loop with delta time
+        function gameLoop(timestamp) {
             if (!isPlaying || isPaused || isGameOver) return;
-            const now = Date.now();
-            if (now - lastDropTime >= getSpeed()) { drop(); lastDropTime = now; }
+
+            const dt = (timestamp - lastDropTime) / 1000; // seconds
+            const dtMs = (timestamp - lastDropTime); // milliseconds
+
+            if (dtMs >= getSpeed()) {
+                if (checkCollision(currentPiece, currentPiece.rotation, 0, 1)) {
+                    lockPiece();
+                    const linesCleared = clearLines();
+                    score += calculatePoints(linesCleared);
+                    lines += linesCleared;
+                    level = Math.floor(lines / 10) + 1;
+                    updateUI();
+                    spawnPiece();
+                } else {
+                    currentPiece.position.y += dt * 60; // Smooth movement
+                }
+                lastDropTime = timestamp;
+            }
+
+            updateParticles(dt);
             renderBoard();
-            gameLoopId = requestAnimationFrame(gameLoop);
+            requestAnimationFrame(gameLoop);
         }
 
         function drop() {
             if (checkCollision(currentPiece, currentPiece.rotation, 0, 1)) {
                 lockPiece();
                 const linesCleared = clearLines();
-                const points = calculatePoints(linesCleared);
-                score += points; lines += linesCleared; level = Math.floor(lines / 10) + 1;
+                score += calculatePoints(linesCleared);
+                lines += linesCleared; level = Math.floor(lines / 10) + 1;
                 updateUI(); spawnPiece();
             } else {
                 currentPiece.position.y++;
@@ -526,74 +557,8 @@
             currentPiece.position.y += dropDistance;
             lockPiece();
             const linesCleared = clearLines();
-            const points = calculatePoints(linesCleared);
-            score += points; lines += linesCleared; level = Math.floor(lines / 10) + 1;
+            score += calculatePoints(linesCleared); lines += linesCleared; level = Math.floor(lines / 10) + 1;
             updateUI(); spawnPiece(); renderBoard();
-        }
-
-        function updateUI() {
-            scoreEl.textContent = score.toLocaleString(); levelEl.textContent = level;
-            linesEl.textContent = lines;
-            levelProgressBar.style.width = `${((lines % 10) / 10) * 100}%`;
-        }
-
-        function renderBoard() {
-            const displayBoard = board.map(row => [...row]);
-            if (currentPiece) {
-                const shape = TETROMINOES[currentPiece.type].shapes[currentPiece.rotation];
-                for (let row = 0; row < shape.length; row++) {
-                    for (let col = 0; col < shape[row].length; col++) {
-                        if (shape[row][col]) {
-                            const boardY = currentPiece.position.y + row, boardX = currentPiece.position.x + col;
-                            if (boardY >= 0 && boardY < BOARD_HEIGHT && boardX >= 0 && boardX < BOARD_WIDTH) {
-                                displayBoard[boardY][boardX] = currentPiece.type;
-                            }
-                        }
-                    }
-                }
-            }
-            boardEl.innerHTML = '';
-            for (let row = 0; row < BOARD_HEIGHT; row++) {
-                for (let col = 0; col < BOARD_WIDTH; col++) {
-                    const cell = document.createElement('div');
-                    cell.className = 'cell';
-                    if (!displayBoard[row][col]) {
-                        cell.classList.add('cell-empty');
-                    } else {
-                        const block = document.createElement('div');
-                        block.className = 'block';
-                        const colors = TETROMINOES[displayBoard[row][col]].color;
-                        block.style.background = `linear-gradient(180deg, ${colors.top} 0%, ${colors.main} 60%, ${colors.bottom} 100%)`;
-                        block.style.boxShadow = `0 0 12px ${colors.glow}, inset 0 -4px 8px rgba(0,0,0,0.2)`;
-                        cell.appendChild(block);
-                    }
-                    boardEl.appendChild(cell);
-                }
-            }
-        }
-
-        function renderPreview() {
-            if (!nextPieceType) return;
-            const shape = TETROMINOES[nextPieceType].shapes[0];
-            const colors = TETROMINOES[nextPieceType].color;
-            const rows = shape.length, cols = shape[0].length;
-            previewContainer.innerHTML = '';
-            const grid = document.createElement('div');
-            grid.className = 'preview-grid';
-            grid.style.gridTemplateColumns = `repeat(${cols}, 28px)`; grid.style.gridTemplateRows = `repeat(${rows}, 28px)`;
-            for (let row = 0; row < rows; row++) {
-                for (let col = 0; col < cols; col++) {
-                    const cell = document.createElement('div');
-                    cell.className = 'preview-cell';
-                    if (shape[row][col]) {
-                        cell.classList.add('preview-cell-filled');
-                        cell.style.background = `linear-gradient(180deg, ${colors.top} 0%, ${colors.main} 60%, ${colors.bottom} 100%)`;
-                        cell.style.boxShadow = `0 0 8px ${colors.glow}`;
-                    }
-                    grid.appendChild(cell);
-                }
-            }
-            previewContainer.appendChild(grid);
         }
 
         document.addEventListener('keydown', (e) => {
@@ -616,11 +581,15 @@
         function togglePause() {
             if (!isPlaying || isGameOver) return;
             isPaused = !isPaused;
-            if (isPaused) { pauseOverlay.classList.remove('hidden'); }
-            else { pauseOverlay.classList.add('hidden'); lastDropTime = Date.now(); gameLoop(); }
+            if (isPaused) pauseOverlay.classList.remove('hidden');
+            else {
+                pauseOverlay.classList.add('hidden');
+                lastDropTime = performance.now();
+                requestAnimationFrame(gameLoop);
+            }
         }
 
-        renderPreview();
+        spawnPreview();
     </script>
 </body>
 </html>
