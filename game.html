@@ -485,6 +485,7 @@
             nextPieceType = randomPiece(); spawnPiece(); updateUI();
             startOverlay.classList.add('hidden'); gameOverOverlay.classList.add('hidden'); pauseOverlay.classList.add('hidden');
             lastDropTime = performance.now();
+            requestAnimationFrame(gameLoop);
         }
 
         function updateUI() {
